@@ -1,12 +1,15 @@
 package com.example.selenium;
 
 import java.time.Duration;
+import java.util.concurrent.TimeoutException;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -25,6 +28,7 @@ public class AppTest {
     wait = new WebDriverWait(app.getDriver(), Duration.ofSeconds(30));
   }
 
+  // CARI TIKET HOTEL
   @Test
   public void testHotelSearch() {
     // Klik button Hotels
@@ -90,8 +94,16 @@ public class AppTest {
     System.out.println("Hotel ditemukan: " + hotelName);
   }
 
+  // CARI TIKET PESAWAT
   @Test
   public void testFlightSearch() {
+    // Tambahkan delay untuk mengisi CAPTCHA
+    try {
+      Thread.sleep(12000); // Delay 10 detik untuk mengisi CAPTCHA
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
     // Klik button Flights
     WebElement flightsButton = wait.until(
       ExpectedConditions.elementToBeClickable(
@@ -156,8 +168,16 @@ public class AppTest {
     );
   }
 
+  // CARI TARI KECAK, COCOKKAN LOKASINYA
   @Test
   public void testKecakAndFireDanceSearch() {
+    // Tambahkan delay untuk mengisi CAPTCHA
+    try {
+      Thread.sleep(12000); // Delay 10 detik untuk mengisi CAPTCHA
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
     // Klik Fun Activities
     WebElement funActivitiesButton = wait.until(
       ExpectedConditions.elementToBeClickable(
@@ -216,268 +236,404 @@ public class AppTest {
     System.out.println("Lokasi ditemukan: " + location.getText());
   }
 
+  // CARI THINGS TO DO, GAMES & ACTIVITIES, GOKART
   @Test
-  public void testFindOutPriceWithDepartureOnly() {
-    // Tunggu dropdown autocomplete muncul
+  public void testFindCarGocar() {
+    // Tambahkan delay untuk mengisi CAPTCHA
     try {
-      Thread.sleep(10000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    // Klik input Select departure date
-    WebElement departureDateInput = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath("//input[@placeholder='Select date']")
-      )
-    );
-    clickElement(departureDateInput);
-
-    // Pilih tanggal keberangkatan
-    WebElement departureDate = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath("//div[@dir='auto' and contains(text(),'14')]")
-      )
-    ); // Ubah sesuai tanggal yang diinginkan
-    clickElement(departureDate);
-
-    // Klik tombol Search Flights (elemen diperbarui)
-    WebElement searchButton = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath("//div[@data-testid='desktop-default-search-button']")
-      )
-    );
-    clickElement(searchButton);
-
-    // Tunggu dropdown autocomplete muncul
-    try {
-      Thread.sleep(20000);
+      Thread.sleep(12000); // Delay 10 detik untuk mengisi CAPTCHA
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
 
-    // Tunggu hingga hasil pencarian selesai dimuat
-    // wait.until(ExpectedConditions.presenceOfElementLocated(
-    //     By.xpath("//div[contains(@class, 'css-901oao') and contains(.,'100%')]")));
+    // Klik "Things To Do"
+    WebElement thingsToDoButton = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath("//div[@class='css-901oao r-nk2qpz r-a5wbuh r-b88u0q r-q4m81j' and text()='Things to Do']")));
+    clickElement(thingsToDoButton);
 
-    // Klik elemen baru "Choose"
-    WebElement chooseButton = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath(
-          "//div[@dir='auto' and @aria-hidden='true' and contains(@class, 'css-bfa6kz') and text()='Choose']"
-        )
-      )
-    );
-    chooseButton.click();
+    // Klik "Games & Activities"
+    WebElement gamesAndActivitiesButton = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath(
+                "//div[@class='css-901oao r-jwli3a r-a5wbuh r-majxgm r-fdjqy7' and text()='Games & Activities']")));
+    clickElement(gamesAndActivitiesButton);
 
-    // Klik tombol Continue
-    WebElement continueButton = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath("//div[contains(text(),'Continue')]")
-      )
-    );
-    clickElement(continueButton);
+    // Klik gambar "Gokart"
+    WebElement gokartImage = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath("//h2[text()='Gokart']")));
+    clickElement(gokartImage);
+
+    // Tunggu hasil penelusuran muncul
+    WebElement searchResult = wait.until(
+        ExpectedConditions.presenceOfElementLocated(
+            By.xpath("//h2[contains(text(),'Bali International Go-Kart Circuit')]")));
+
+    // Verifikasi apakah hasil penelusuran ditemukan
+    Assert.assertNotNull("Hasil penelusuran tidak ditemukan", searchResult.toString());
   }
 
+  // CARI TAHU HARGA TIKET BUS 1X PERJALANAN, 1 ORANG
   @Test
-  public void testCarRentalBooking() {
-    // Tunggu elemen dropdown autocomplete muncul
+  public void testBusTicketBooking() {
+    // Tambahkan delay untuk mengisi CAPTCHA
     try {
-      Thread.sleep(20000); // Waktu tunggu disesuaikan
+      Thread.sleep(12000); // Delay 10 detik untuk mengisi CAPTCHA
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+    // Klik Bus & Travel
+    WebElement busTravelButton = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath("//*[@data-id='IcProductDuotoneBusFill']")));
+    busTravelButton.click();
 
-    // Klik tombol "Car Rental"
-    WebElement carRentalButton = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath(
-          "//div[@class='css-1dbjc4n r-18u37iz r-1777fci r-1mnahxq']//div[text()='Car Rental']"
-        )
-      )
-    );
-    carRentalButton.click();
+    // Klik ikon From
+    WebElement fromIcon = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath(
+                "//div[contains(text(),'From')]/following-sibling::div//img[@src='https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/8/8d0597b655df4302ed9a15572557fb40.svg']")));
+    fromIcon.click();
 
-    // Isi input lokasi dengan "Surabaya"
-    WebElement locationInput = wait.until(
-      ExpectedConditions.presenceOfElementLocated(
-        By.xpath("//input[@placeholder='Enter city or region']")
-      )
-    );
-    locationInput.sendKeys("Surabaya");
-    try {
-      Thread.sleep(2000); // Tunggu autocomplete muncul
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    locationInput.sendKeys(Keys.ARROW_DOWN);
-    locationInput.sendKeys(Keys.ENTER);
+    // Isi input "from" dengan Purabaya Terminal
+    WebElement fromInput = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath(
+                "//div[contains(text(),'From')]/following-sibling::div//input[@placeholder='Enter city, terminal, or other points']")));
+    fromInput.sendKeys("Purabaya Terminal");
 
-    // Klik input "End Time" dan isi dengan "20.00"
-    WebElement endTimeInput = wait.until(
-      ExpectedConditions.presenceOfElementLocated(
-        By.xpath("//input[@data-testid='rental-search-form-time-input-end']")
-      )
-    );
-    endTimeInput.click();
-    endTimeInput.clear();
-    endTimeInput.sendKeys("20.00");
+    // Klik autocomplete "Purabaya Terminal"
+    WebElement fromOption = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath("//span[contains(text(),'Purabaya Terminal')]")));
+    fromOption.click();
+
+    // Klik ikon To
+    WebElement toIcon = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath(
+                "//div[contains(text(),'To')]/following-sibling::div//img[@src='https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/8/81748d0e10d2b723189270df54db5dde.svg']")));
+    toIcon.click();
+
+    // Isi input "to" dengan Bandung
+    WebElement toInput = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath(
+                "//div[contains(text(),'To')]/following-sibling::div//input[@placeholder='Enter city, terminal, or other points']")));
+    toInput.sendKeys("Jakarta");
+
+    // Klik autocomplete "Bandung Station"
+    WebElement toOption = wait.until(
+        ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//h3[span[text()='Jakarta']]//span")));
+
+    toOption.click();
+
+    // Klik input berdasarkan "Departure Date"
+    WebElement dateInput = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath("//div[normalize-space(text())='Departure Date']/following-sibling::div//input")));
+    dateInput.click();
+
+    // Pilih tanggal 26
+    WebElement dateOption = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath("//div[contains(text(),'26')]")));
+    dateOption.click();
 
     // Klik tombol "Search"
     WebElement searchButton = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath("//div[@data-testid='rental-search-form-cta']")
-      )
-    );
+        ExpectedConditions.elementToBeClickable(
+            By.cssSelector("div.css-18t94o4 svg[data-id='IcSystemSearch']")));
     searchButton.click();
 
-    // Tunggu elemen pencarian selesai dimuat
     try {
-      Thread.sleep(5000); // Waktu tunggu disesuaikan
+      Thread.sleep(5000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
 
-    // Klik "Passenger Capacity"
-    WebElement passengerCapacity = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath("//div[contains(text(),'Passenger Capacity')]")
-      )
-    );
-    passengerCapacity.click();
+    // Get the "Book Now" button element
+    WebElement bookNowButton = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath("//div[contains(@class, 'css-18t94o4') and .//div[text()='Book Now']]")));
 
-    // Centang kapasitas 5-6
-    WebElement capacityCheckbox = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath("//div[contains(text(),'5 - 6')]")
-      )
-    );
-    capacityCheckbox.click();
+    // Scroll the element into view
+    ((JavascriptExecutor) app.getDriver()).executeScript("arguments[0].scrollIntoView(true);", bookNowButton);
 
-    // Klik "Transmission"
-    WebElement transmissionButton = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath("//div[contains(text(),'Transmission')]")
-      )
-    );
-    transmissionButton.click();
+    // Use JavaScript to click the element
+    ((JavascriptExecutor) app.getDriver()).executeScript("arguments[0].click();", bookNowButton);
 
-    // Centang "Automatic"
-    WebElement automaticCheckbox = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath("//svg[@accentColor='#CDD0D1']")
-      )
-    );
-    automaticCheckbox.click();
+    try {
+      Thread.sleep(5000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
 
-    // Klik "Car Type"
-    WebElement carTypeButton = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath("//div[contains(text(),'Car Type')]")
-      )
-    );
-    carTypeButton.click();
+    // Isi input-inputnya
+    WebElement fullNameInput = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath("//input[@aria-labelledby='name.full']")));
+    fullNameInput.sendKeys("Hanvy Hendrawan");
 
-    // Centang "SUV"
-    WebElement suvCheckbox = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath("//svg[@fillColor='#0194F3']")
-      )
-    );
-    suvCheckbox.click();
+    // Locate the phone number input field
+    WebElement phoneNumberInput = app.getDriver().findElement(By.xpath("//input[@aria-label='Phone Number']"));
 
-    // Klik "Provider"
-    WebElement providerButton = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath("//div[contains(text(),'Provider')]")
-      )
-    );
-    providerButton.click();
+    phoneNumberInput.sendKeys("81217771105");
 
-    // Pilih "Lio Transport & Vvip Limousine Surabaya"
-    WebElement providerOption = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath(
-          "//div[contains(text(),'Lio Transport & Vvip Limousine Surabaya')]"
-        )
-      )
-    );
-    providerOption.click();
+    WebElement emailInput = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath("//input[@aria-labelledby='emailAddress']")));
+    emailInput.sendKeys("hanvyhendrawan1105@gmail.com");
 
-    // Tunggu hingga elemen "Toyota Raize" muncul
-    WebElement toyotaRaize = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath("//h3[contains(text(),'Toyota Raize')]")
-      )
-    );
-    clickElement(toyotaRaize);
+    // Locate the dropdown's container
+    WebElement dropdownContainer = wait.until(
+        ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(@class, 'css-1dbjc4n')]")));
 
-    // Klik tombol "Continue" pada hasil pencarian Toyota Raize
-    WebElement continueButtonToyota = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath(
-          "//div[contains(@class, 'css-18t94o4') and .//div[contains(text(),'Continue')]]"
-        )
-      )
-    );
-    clickElement(continueButtonToyota);
+    // Scroll the dropdown container into view
+    ((JavascriptExecutor) app.getDriver()).executeScript("arguments[0].scrollIntoView(true);", dropdownContainer);
 
-    // Pilih rental provider pertama dengan menekan tombol "Continue"
-    WebElement continueButtonProvider = wait.until(
-      ExpectedConditions.elementToBeClickable(
-        By.xpath(
-          "(//div[contains(@class, 'css-18t94o4') and .//div[contains(text(),'Continue')]])[1]"
-        )
-      )
-    );
-    clickElement(continueButtonProvider);
+    // Click the dropdown icon to expand
+    WebElement dropdownIcon = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.cssSelector("img[alt='Toggle Options']")));
+    clickElement(dropdownIcon);
 
-    // Verifikasi informasi yang ditampilkan
-    // Lokasi dan tanggal sewa
-    WebElement rentalInfo = wait.until(
-      ExpectedConditions.presenceOfElementLocated(
-        By.xpath(
-          "//div[contains(text(),'Surabaya • Sun, 19 Jan 2025, 09.00 - Tue, 21 Jan 2025, 20.00')]"
-        )
-      )
-    );
-    Assert.assertNotNull(rentalInfo);
+    // Wait for the dropdown options to become visible and select "Mr."
+    WebElement optionMr = wait.until(
+        ExpectedConditions.elementToBeClickable(By.xpath("//option[@value='MR']")));
+    optionMr.click();
 
-    // Nama mobil
-    WebElement carName = wait.until(
-      ExpectedConditions.presenceOfElementLocated(
-        By.xpath("//h2[contains(text(),'Toyota Raize')]")
-      )
-    );
-    Assert.assertNotNull(carName);
+    // Lokasi elemen Full Name kedua
+    By secondNameFullLocator = By
+        .xpath("(//input[@aria-labelledby='name.full' and @aria-describedby='(without title and punctuation)'])[2]");
 
-    // Penyedia layanan
-    WebElement providerInfo = wait.until(
-      ExpectedConditions.presenceOfElementLocated(
-        By.xpath(
-          "//div[contains(text(),'Provided by Lio Transport & Vvip Limousine Surabaya')]"
-        )
-      )
-    );
-    Assert.assertNotNull(providerInfo);
+    // Scroll ke elemen Full Name kedua
+    WebElement secondNameFullInput = wait.until(
+        ExpectedConditions.visibilityOfElementLocated(secondNameFullLocator));
+    ((JavascriptExecutor) app.getDriver()).executeScript("arguments[0].scrollIntoView(true);", secondNameFullInput);
 
-    // Kapasitas tempat duduk
-    WebElement seatInfo = wait.until(
-      ExpectedConditions.presenceOfElementLocated(
-        By.xpath("//div[contains(text(),'4 seats')]")
-      )
-    );
-    Assert.assertNotNull(seatInfo);
+    // Tunggu hingga Full Name kedua dapat diklik dan isi nilai
+    secondNameFullInput = wait.until(ExpectedConditions.elementToBeClickable(secondNameFullLocator));
+    secondNameFullInput.sendKeys("Hanvy Hendrawan");
 
-    // Jenis transmisi
-    WebElement transmissionInfo = wait.until(
-      ExpectedConditions.presenceOfElementLocated(
-        By.xpath("//div[contains(text(),'AUTOMATIC')]")
-      )
-    );
-    Assert.assertNotNull(transmissionInfo);
+    // Tunggu hingga tombol "Continue" dapat diklik
+    WebElement continueButton = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath("//div[contains(@class,'css-901oao') and contains(text(),'Continue') and @aria-hidden='true']")));
 
-    // Cetak hasil jika semua verifikasi berhasil
-    System.out.println("Informasi sesuai dengan pilihan awal.");
+    // Scroll ke elemen jika diperlukan
+    ((JavascriptExecutor) app.getDriver()).executeScript("arguments[0].scrollIntoView(true);", continueButton);
+
+    // Klik tombol "Continue"
+    continueButton.click();
+
+    // Cek apakah harga total muncul
+    WebElement totalPrice = wait.until(
+        ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//div[@data-testid='title-price']")));
+
+    // Verifikasi harga total
+    String priceText = totalPrice.getText();
+    Assert.assertTrue(priceText.contains("Rp"));
+  }
+
+  // CARI TIKET KERETA TGL TERTENTU (KLO ADA BOOK, KLO GK CETAK ROUTE NOT AVAILABLE)
+  @Test
+  public void testTrainTicketBooking() {
+    // Tambahkan delay untuk mengisi CAPTCHA
+    try {
+      Thread.sleep(12000); // Delay 12 detik untuk mengisi CAPTCHA
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    // Klik Bus & Travel
+    WebElement trainButton = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath("//*[@data-id='IcProductDuotoneTrainFill16']")));
+    trainButton.click();
+
+    // Klik ikon From
+    WebElement originIcon = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath(
+                "//div[contains(text(),'Origin')]/following-sibling::div//img[@src='https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/d/dff8e1c4a5c6c0b92ae1e575e375c807.svg']")));
+    originIcon.click();
+
+    // Isi input "from" dengan Purabaya Terminal
+    WebElement originInput = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath(
+                "//div[contains(text(),'Origin')]/following-sibling::div//input[@placeholder='Origin']")));
+    originInput.sendKeys("Surabaya Pasar Turi");
+
+    // Klik autocomplete "Surabaya"
+    WebElement originOption = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath("//div[contains(text(),'Surabaya')]")));
+    originOption.click();
+
+    // Klik ikon Destination
+    WebElement destinationIcon = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath(
+                "//div[contains(text(),'Destination')]/following-sibling::div//img[@src='https://d1785e74lyxkqq.cloudfront.net/_next/static/v2/6/63fb9afe8cfcff61939c7d7947b6178b.svg']")));
+    destinationIcon.click();
+
+    // Isi input "destination" dengan Cilacap
+    WebElement destinationInput = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath(
+                "//input[@placeholder='Destination' and @data-testid='train-desktop-search-form-destination-input']")));
+    destinationInput.sendKeys("Cilacap");
+
+    // Klik autocomplete "Cilacap"
+    WebElement desinationOption = wait.until(
+        ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//div[@data-testid='train-desktop-autocomplete-item-sublabel' and contains(text(),'Cilacap')]")));
+    desinationOption.click();
+
+    // Klik input berdasarkan "Departure Date"
+    WebElement departureInput = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath("//div[normalize-space(text())='Departure']/following-sibling::div//input")));
+    departureInput.click();
+
+    // Pilih tanggal 27
+    WebElement dateOption = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.xpath("//div[contains(text(),'27')]")));
+    dateOption.click();
+
+    // Klik tombol "Search"
+    WebElement searchButton = wait.until(
+        ExpectedConditions.elementToBeClickable(
+            By.cssSelector("div.css-901oao svg[data-id='IcSystemSearch']")));
+    searchButton.click();
+
+    try {
+      Thread.sleep(3000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    // Pengecekan apakah elemen "Route not available" muncul
+    try {
+      WebElement routeNotAvailableMessage = wait.until(
+          ExpectedConditions.visibilityOfElementLocated(
+              By.xpath("//div[@data-testid='empty-state-title' and text()='Route not available']")));
+
+      // Jika elemen ditemukan, cetak pesan bahwa rute tidak tersedia
+      System.out.println("Route not available");
+    } catch (org.openqa.selenium.TimeoutException e) {
+      // Jika elemen "Route not available" tidak ditemukan, lanjutkan dengan memilih
+      // rute
+      try {
+        // Tunggu tombol "Select" jika ditemukan
+        WebElement selectButton = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(
+                By.xpath(
+                    "//div[@data-testid='train-desktop-search-result-list-departure-item-cta' and @role='button']//div[text()='Select']")));
+
+        // Jika tombol "Select" ditemukan, klik tombol tersebut
+        selectButton.click();
+
+        // Lanjutkan ke proses pemesanan setelah memilih jadwal
+        WebElement bookButton = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(
+                By.xpath(
+                    "//div[@data-testid='train-desktop-search-result-round-trip-confirmation-cta' and @role='button']//div[text()='Book']")));
+        bookButton.click();
+
+        // Isi input-inputnya
+        WebElement fullNameInput = wait.until(
+            ExpectedConditions.elementToBeClickable(
+                By.xpath("//input[@aria-labelledby='name.full']")));
+        fullNameInput.sendKeys("Hanvy Hendrawan");
+
+        // Lokasi input nomor telepon
+        WebElement phoneNumberInput = app.getDriver().findElement(By.xpath("//input[@aria-label='Phone Number']"));
+        phoneNumberInput.sendKeys("81217771105");
+
+        WebElement emailInput = wait.until(
+            ExpectedConditions.elementToBeClickable(
+                By.xpath("//input[@aria-labelledby='emailAddress']")));
+        emailInput.sendKeys("hanvyhendrawan1105@gmail.com");
+
+        // Locate the dropdown's container
+        WebElement dropdownContainer = wait.until(
+            ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(@class, 'css-1dbjc4n')]")));
+
+        // Scroll the dropdown container into view
+        ((JavascriptExecutor) app.getDriver()).executeScript("arguments[0].scrollIntoView(true);", dropdownContainer);
+
+        // Click the dropdown icon to expand
+        WebElement dropdownIcon = wait.until(
+            ExpectedConditions.elementToBeClickable(
+                By.cssSelector("img[alt='Toggle Options']")));
+        clickElement(dropdownIcon);
+
+        // Wait for the dropdown options to become visible and select "Mr."
+        WebElement optionMr = wait.until(
+            ExpectedConditions.elementToBeClickable(By.xpath("//option[@value='MR']")));
+        optionMr.click();
+
+        // Locate the dropdown's container
+        WebElement dropdownContainerIDType = wait.until(
+            ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(@class, 'css-1dbjc4n')]")));
+
+        // Scroll the dropdown container into view
+        ((JavascriptExecutor) app.getDriver()).executeScript("arguments[0].scrollIntoView(true);",
+            dropdownContainerIDType);
+
+        // Click the dropdown icon to expand
+        WebElement dropdownIDTypeIcon = wait.until(
+            ExpectedConditions.elementToBeClickable(
+                By.cssSelector("img[alt='Toggle Options']")));
+        clickElement(dropdownIDTypeIcon);
+
+        // Wait for the dropdown options to become visible and select "Mr."
+        WebElement optionIDCard = wait.until(
+            ExpectedConditions.elementToBeClickable(By.xpath("//option[@value='KTP']")));
+        optionIDCard.click();
+
+        // Lokasi elemen ID Number
+        By idNumberLocated = By
+            .xpath("(//input[@aria-labelledby='travelerID.number' and @aria-invalid='false'])");
+
+        // Scroll ke elemen ID Number
+        WebElement idNumberInput = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(idNumberLocated));
+        ((JavascriptExecutor) app.getDriver()).executeScript("arguments[0].scrollIntoView(true);", idNumberInput);
+
+        // Tunggu hingga Full Name kedua dapat diklik dan isi nilai
+        idNumberInput = wait.until(ExpectedConditions.elementToBeClickable(idNumberInput));
+        idNumberInput.sendKeys("3578201105040001");
+
+        // Tunggu hingga tombol "Continue" dapat diklik
+        WebElement continueButton = wait.until(
+            ExpectedConditions.elementToBeClickable(
+                By.xpath(
+                    "//div[contains(@class,'css-901oao') and contains(text(),'Continue') and @aria-hidden='true']")));
+        // Scroll ke elemen jika diperlukan
+        ((JavascriptExecutor) app.getDriver()).executeScript("arguments[0].scrollIntoView(true);", continueButton);
+        // Klik tombol "Continue"
+        continueButton.click();
+
+        // Cek apakah harga total muncul
+        WebElement totalPrice = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@data-testid='title-price']")));
+
+        // Verifikasi harga total
+        String priceText = totalPrice.getText();
+        Assert.assertTrue(priceText.contains("Rp"));
+      } catch (org.openqa.selenium.TimeoutException selectException) {
+        System.out.println("No available routes for the selected dates.");
+      }
+    }
   }
 
   private void clickElement(WebElement element) {
