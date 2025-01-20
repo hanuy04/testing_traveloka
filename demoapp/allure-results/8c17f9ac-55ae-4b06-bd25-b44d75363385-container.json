@@ -1,0 +1,1 @@
+{"uuid":"8c17f9ac-55ae-4b06-bd25-b44d75363385","name":"com.example.selenium.SearchHotel","children":["622fc7bb-8285-4e0e-a7a1-50cf635ffd08"],"befores":[{"name":"setup","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1737396374263,"stop":1737396379995}],"afters":[],"start":1737396374238,"stop":1737396419418}
