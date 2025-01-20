@@ -1,0 +1,1 @@
+{"uuid":"61c73e82-3513-4fd4-8a0b-fc1c972b00b3","name":"com.example.selenium.SignIn","children":["b04eebf5-ebe2-4a41-beee-9e288271e8cf"],"befores":[{"name":"setup","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1737365402987,"stop":1737365408920}],"afters":[],"start":1737365402898,"stop":1737365421197}

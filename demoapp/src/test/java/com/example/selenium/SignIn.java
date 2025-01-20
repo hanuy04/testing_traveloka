@@ -134,7 +134,7 @@ public class SignIn {
   }
 
   @Test
-  public void testSignInNoEmail() {
+  public void testSignIn() {
     try {
       // Delay 12 detik sebelum klik tombol Log In
       Thread.sleep(12000);  // Delay untuk menunggu CAPTCHA jika diperlukan
@@ -150,6 +150,39 @@ public class SignIn {
         JavascriptExecutor executor = (JavascriptExecutor) app.getDriver();
         executor.executeScript("arguments[0].click();", loginButton);  // Klik menggunakan JavaScript
       }
+
+      Thread.sleep(5000);
+
+      // tutup web browser
+      app.getDriver().quit();
+
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testSignInNoEmailAndPassword() {
+    try {
+      // Delay 12 detik sebelum klik tombol Log In
+      Thread.sleep(12000);  // Delay untuk menunggu CAPTCHA jika diperlukan
+
+      // Menunggu elemen Log In untuk klik
+      WebElement loginButton = app.getDriver().findElement(
+          By.xpath("//div[@dir='auto' and contains(@class, 'css-901oao') and contains(text(), 'Log In')]"));
+      try {
+        // Klik menggunakan JavaScript jika terjadi kesalahan klik
+        loginButton.click();
+      } catch (ElementClickInterceptedException e) {
+        System.out.println("Element Click Intercepted, trying JavaScript click.");
+        JavascriptExecutor executor = (JavascriptExecutor) app.getDriver();
+        executor.executeScript("arguments[0].click();", loginButton);  // Klik menggunakan JavaScript
+      }
+
+      // Input email
+      WebElement emailInput = app.getDriver().findElement(
+          By.xpath("//input[@data-testid='auth-username' and @placeholder='Example: +62812345678 or yourname@email.com']"));
+      emailInput.sendKeys("alexis.j22@mhs.istts.ac.id");
 
       Thread.sleep(5000);
 
