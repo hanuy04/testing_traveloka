@@ -133,7 +133,7 @@ public class SearchHotel {
 
       // Menunggu elemen opsi filter untuk klik berdasarkan skor ulasan
       WebElement reviewScoreOption = app.getDriver().findElement(
-        By.xpath("//div[@id='dropdown-menu-item']//div[@class='css-901oao r-a5wbuh r-majxgm r-fdjqy7' and text()='Review Score']"));
+        By.xpath("//div[@id='dropdown-menu-item']//div[@class='css-901oao r-a5wbuh r-majxgm r-fdjqy7' and text()='Lowest Price']"));
       reviewScoreOption.click();
 
       Thread.sleep(15000);  // Delay 5 detik sebelum memasukkan tanggal
